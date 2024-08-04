@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_clone/features/auth/pages/login_view.dart';
+import 'package:youtube_clone/homeview.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -28,11 +29,8 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const LoginView();
-          } else if (snapshot.hasData) {
-            return Container();
-          } else {
-            return const Scaffold();
           }
+          return const Homeview();
         },
       ),
     );
