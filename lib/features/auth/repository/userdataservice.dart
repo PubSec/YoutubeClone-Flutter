@@ -1,6 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_clone/features/auth/model/usermodel.dart';
+
+final userDataServiceProvider = Provider(
+  (ref) => UserDataService(
+      auth: FirebaseAuth.instance,
+      firebaseFirestore: FirebaseFirestore.instance),
+);
 
 class UserDataService {
   FirebaseAuth auth;
@@ -27,11 +34,15 @@ class UserDataService {
       username: username,
       email: email,
       profilePicture: profilePicture,
-      subscriptions: subscriptions,
-      videos: videos,
-      userID: userID,
+      subscriptions: [],
+      videos: 0,
+      userID: auth.currentUser!.uid,
       description: description,
-      type: type,
+      type: 'user',
     );
+    await firebaseFirestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .set(user.toJson());
   }
 }
