@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 // TODO: If you encounter an error with the subscriptions get back to T-42 on the video
 part 'usermodel.g.dart';
 
-@JsonSerializable(createToJson: true)
+@JsonSerializable()
 class UserModel {
   final String displayName;
   final String username;
