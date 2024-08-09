@@ -1,4 +1,4 @@
-package com.test.youtube1
+package com.test.youtube
 
 import io.flutter.embedding.android.FlutterActivity
 

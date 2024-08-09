@@ -21,7 +21,7 @@ class _UsernameviewState extends ConsumerState<Usernameview> {
   bool isValid = true;
 
   void validateUsername() async {
-    final userMap = await FirebaseFirestore.instance.collection('user').get();
+    final userMap = await FirebaseFirestore.instance.collection('users').get();
     final users = userMap.docs.map((user) => user).toList();
     String? targetedUsername;
     for (var user in users) {
