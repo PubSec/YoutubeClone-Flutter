@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youtube_clone/homeview.dart';
+import 'package:youtube_clone/features/channel/mychannel/pages/mychannel.dart';
+// import 'package:youtube_clone/homeview.dart';
 // import 'package:youtube_clone/features/auth/pages/login_view.dart';
 // import 'package:youtube_clone/features/auth/pages/usernameview.dart';
 import 'firebase_options.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         //         } else if (snapshot.connectionState == ConnectionState.waiting) {
         //           const CircularProgressIndicator();
         //         }
-        home: Homeview());
+        home: MyChannelView());
   }
 }
 //       ),

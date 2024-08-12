@@ -1,6 +1,9 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youtube_clone/core/error_page.dart';
+import 'package:youtube_clone/core/loader.dart';
+import 'package:youtube_clone/features/auth/provider/user_provider.dart';
 
 class Homeview extends StatelessWidget {
   const Homeview({super.key});
@@ -39,6 +42,23 @@ class Homeview extends StatelessWidget {
                       "assets/icons/search.png",
                     ),
                   ),
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    return ref.watch(currentUserProvider).when(
+                          data: (currentUser) => Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.grey,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  currentUser.profilePicture),
+                            ),
+                          ),
+                          error: (error, stackTrace) => const ErrorView(),
+                          loading: () => const LoaderView(),
+                        );
+                  },
                 ),
               ],
             ),
