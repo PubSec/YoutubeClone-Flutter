@@ -1,112 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_clone/colors.dart';
-import 'package:youtube_clone/widgets/image_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youtube_clone/core/error_page.dart';
+import 'package:youtube_clone/core/loader.dart';
+import 'package:youtube_clone/features/auth/provider/user_provider.dart';
+import 'package:youtube_clone/features/channel/mychannel/pages/parts/buttons.dart';
+import 'package:youtube_clone/features/channel/mychannel/pages/parts/tabbar.dart';
+import 'package:youtube_clone/features/channel/mychannel/pages/parts/top_header.dart';
 
-class MyChannelView extends StatelessWidget {
+class MyChannelView extends ConsumerWidget {
   const MyChannelView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 7,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Column(
-              children: [
-                const Center(
-                  child: CircleAvatar(
-                    radius: 38,
-                    backgroundColor: Color.fromARGB(255, 167, 157, 157),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 4),
-                  child: Text(
-                    'User Name',
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 9),
-                  child: RichText(
-                    text: const TextSpan(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(currentUserProvider).when(
+        data: (currentUser) => DefaultTabController(
+              length: 7,
+              child: Scaffold(
+                backgroundColor: Colors.white,
+                body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Column(
                       children: [
-                        TextSpan(text: '@username  '),
-                        TextSpan(text: 'No subsriptions '),
-                        TextSpan(text: 'No videos')
+                        TopHeaderWidget(user: currentUser),
+                        const Text('About.'),
+                        const ButtonWidget(),
+                        const TabBarWiget(),
+                        const Expanded(
+                          child: TabBarView(children: [
+                            Center(child: Text('Home')),
+                            Center(child: Text('Video')),
+                            Center(child: Text('Shorts')),
+                            Center(child: Text('Community')),
+                            Center(child: Text('Playlist')),
+                            Center(child: Text('Channel')),
+                            Center(child: Text('About')),
+                          ]),
+                        )
                       ],
-                      style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ),
                 ),
-                const Text('About.'),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          height: 40,
-                          decoration: const BoxDecoration(
-                            color: softBlueGreyBackGround,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                          ),
-                          child: TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Manage Videos',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: ImageButton(
-                          onPressed: () {},
-                          image: 'pen.png',
-                          haveColor: true,
-                        ),
-                      ),
-                      Expanded(
-                        child: ImageButton(
-                          onPressed: () {},
-                          image: 'time-watched.png',
-                          haveColor: true,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: TabBar(
-                    isScrollable: true,
-                    labelStyle:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorPadding: EdgeInsets.only(top: 12),
-                    tabs: [
-                      Text('Home'),
-                      Text('Videos'),
-                      Text('Shorts'),
-                      Text('Community'),
-                      Text('Playlists'),
-                      Text('Channel'),
-                      Text('About'),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+        error: (error, stackTrace) => const ErrorView(),
+        loading: () => const LoaderView());
   }
 }
